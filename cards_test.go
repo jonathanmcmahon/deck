@@ -41,7 +41,7 @@ func TestCards(t *testing.T) {
 }
 
 func TestDeck(t *testing.T) {
-	d := newDeck()
+	d := New()
 
 	if len(d.cards) != 54 {
 		t.Error("Deck is not 54 cards; it is ", len(d.cards))
@@ -55,7 +55,7 @@ func TestDeck(t *testing.T) {
 }
 
 func TestDeckShuffle(t *testing.T) {
-	d := newDeck()
+	d := New()
 
 	// Shuffle cards
 	pre := d.deckIndex
