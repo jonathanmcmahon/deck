@@ -41,7 +41,7 @@ func TestCards(t *testing.T) {
 }
 
 func TestDeck(t *testing.T) {
-	d := New(2)
+	d := New(1, 2)
 
 	if len(d.cards) != 54 {
 		t.Error("Deck is not 54 cards; it is ", len(d.cards))
@@ -55,7 +55,7 @@ func TestDeck(t *testing.T) {
 }
 
 func TestDeckShuffle(t *testing.T) {
-	d := New(2)
+	d := New(1, 2)
 
 	// Shuffle cards
 	pre := d.deckIndex
@@ -77,7 +77,7 @@ func TestDeckShuffle(t *testing.T) {
 
 func TestCustomJokerCount(t *testing.T) {
 	nJokers := 4
-	d := New(nJokers)
+	d := New(1, nJokers)
 
 	// Shuffle cards
 	d.Shuffle()
@@ -92,4 +92,21 @@ func TestCustomJokerCount(t *testing.T) {
 	if jokerCount != nJokers {
 		t.Error("There should be", nJokers, "Jokers; there were", jokerCount)
 	}
+}
+
+func TestMultipleDeck(t *testing.T) {
+	nJokers := 2
+	d := New(2, nJokers)
+
+	nCards := 52 + 52 + nJokers
+
+	if len(d.cards) != nCards {
+		t.Error("Deck is not", nCards, "cards; it is ", len(d.cards))
+	}
+
+	if len(d.cards) != len(d.deckIndex) {
+		t.Error("Card count does not match deck index")
+	}
+
+	fmt.Println(d.deckIndex)
 }
