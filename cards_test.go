@@ -41,7 +41,7 @@ func TestCards(t *testing.T) {
 }
 
 func TestDeck(t *testing.T) {
-	d := New()
+	d := New(2)
 
 	if len(d.cards) != 54 {
 		t.Error("Deck is not 54 cards; it is ", len(d.cards))
@@ -55,7 +55,7 @@ func TestDeck(t *testing.T) {
 }
 
 func TestDeckShuffle(t *testing.T) {
-	d := New()
+	d := New(2)
 
 	// Shuffle cards
 	pre := d.deckIndex
@@ -72,5 +72,24 @@ func TestDeckShuffle(t *testing.T) {
 	}
 	if !diff {
 		t.Error("Card order is the same after shuffling")
+	}
+}
+
+func TestCustomJokerCount(t *testing.T) {
+	nJokers := 4
+	d := New(nJokers)
+
+	// Shuffle cards
+	d.Shuffle()
+
+	// Look for difference in card ordering post-shuffle
+	jokerCount := 0
+	for i := 0; i < len(d.cards); i++ {
+		if d.cards[i].Suit == Joker {
+			jokerCount++
+		}
+	}
+	if jokerCount != nJokers {
+		t.Error("There should be", nJokers, "Jokers; there were", jokerCount)
 	}
 }

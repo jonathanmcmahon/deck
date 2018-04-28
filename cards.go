@@ -69,7 +69,7 @@ type Deck struct {
 }
 
 // New creates a new unshuffled deck of 54 cards.
-func New() Deck {
+func New(nJokers int) Deck {
 	var c = []Card{}
 
 	// Add one card for each suit/rank combination
@@ -81,8 +81,9 @@ func New() Deck {
 		}
 	}
 	// Add jokers
-	c = append(c, Card{Joker, 0})
-	c = append(c, Card{Joker, 0})
+	for i := 0; i < nJokers; i++ {
+		c = append(c, Card{Joker, 0})
+	}
 
 	// Initially the deck is unshuffled
 	var indices = []int{}
