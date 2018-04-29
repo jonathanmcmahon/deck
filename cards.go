@@ -69,8 +69,17 @@ type Deck struct {
 }
 
 // New creates a new unshuffled deck of 54 cards.
-func New(nDecks int, nJokers int) Deck {
+func New(nDecks int, nJokers int, omitRanks []Rank) Deck {
 	var c = []Card{}
+
+	// Build map of ranks to include
+	var includeRanks = make(map[Rank]bool)
+	for _, r := range ranks {
+		includeRanks[r] = true
+	}
+	for _, r := range omitRanks {
+		includeRanks[r] = false
+	}
 
 	// Create a multi-deck deck if needed
 	for dcount := 0; dcount < nDecks; dcount++ {
@@ -78,8 +87,10 @@ func New(nDecks int, nJokers int) Deck {
 		i := 0
 		for _, s := range suits {
 			for _, r := range ranks {
-				c = append(c, Card{s, r})
-				i++
+				if includeRanks[r] {
+					c = append(c, Card{s, r})
+					i++
+				}
 			}
 		}
 	}

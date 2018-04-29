@@ -41,7 +41,7 @@ func TestCards(t *testing.T) {
 }
 
 func TestDeck(t *testing.T) {
-	d := New(1, 2)
+	d := New(1, 2, []Rank{})
 
 	if len(d.cards) != 54 {
 		t.Error("Deck is not 54 cards; it is ", len(d.cards))
@@ -55,7 +55,7 @@ func TestDeck(t *testing.T) {
 }
 
 func TestDeckShuffle(t *testing.T) {
-	d := New(1, 2)
+	d := New(1, 2, []Rank{})
 
 	// Shuffle cards
 	pre := d.deckIndex
@@ -77,7 +77,7 @@ func TestDeckShuffle(t *testing.T) {
 
 func TestCustomJokerCount(t *testing.T) {
 	nJokers := 4
-	d := New(1, nJokers)
+	d := New(1, nJokers, []Rank{})
 
 	// Shuffle cards
 	d.Shuffle()
@@ -96,7 +96,7 @@ func TestCustomJokerCount(t *testing.T) {
 
 func TestMultipleDeck(t *testing.T) {
 	nJokers := 2
-	d := New(2, nJokers)
+	d := New(2, nJokers, []Rank{})
 
 	nCards := 52 + 52 + nJokers
 
@@ -109,4 +109,18 @@ func TestMultipleDeck(t *testing.T) {
 	}
 
 	fmt.Println(d.deckIndex)
+}
+
+func TestOmitRanks(t *testing.T) {
+	omitRanks := []Rank{Two, Three}
+
+	d := New(1, 2, omitRanks)
+
+	for _, v := range d.cards {
+		for _, r := range omitRanks {
+			if v.Rank == r {
+				t.Error("Deck contains a card of a rank that should be omitted:", v)
+			}
+		}
+	}
 }
