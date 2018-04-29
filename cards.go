@@ -68,7 +68,8 @@ type Deck struct {
 	deckIndex []int // the order of the cards in the deck
 }
 
-// New creates a new unshuffled deck of 54 cards.
+// New creates a new unshuffled deck comprised of nDecks of 52 cards and nJokers,
+// minus any Ranks listed in omitRanks.
 func New(nDecks int, nJokers int, omitRanks []Rank) Deck {
 	var c = []Card{}
 
