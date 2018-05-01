@@ -1,7 +1,8 @@
-// Package cards provides a standard deck of playing cards.
-package cards
+// Package deck provides a standard deck of playing cards.
+package deck
 
 import (
+	"bytes"
 	"fmt"
 	"math/rand"
 )
@@ -59,7 +60,7 @@ func (c Card) String() string {
 	}
 	ss := suitStr[c.Suit]
 	rs := rankStr[c.Rank]
-	return fmt.Sprintf("%s %s", rs, ss)
+	return fmt.Sprintf("%s%s", rs, ss)
 }
 
 // A Deck is a deck of playing cards.
@@ -116,4 +117,15 @@ func (d *Deck) Shuffle() {
 	i := rand.Perm(54)
 
 	d.deckIndex = i
+}
+
+func (d Deck) String() string {
+	var buffer bytes.Buffer
+
+	for _, c := range d.deckIndex {
+		buffer.WriteString(d.cards[c].String())
+		buffer.WriteString(" ")
+	}
+
+	return fmt.Sprintf(buffer.String())
 }

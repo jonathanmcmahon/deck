@@ -1,4 +1,4 @@
-package cards
+package deck
 
 import (
 	"fmt"
@@ -28,13 +28,13 @@ func TestCards(t *testing.T) {
 		t.Error("Wrong value for ace.")
 	}
 
-	if c.String() != "A ♥" {
+	if c.String() != "A♥" {
 		t.Error("String conversion for ace of hearts was incorrect: ", c.String())
 	}
 
 	c = Card{Rank: King, Suit: Diamonds}
 
-	if c.String() != "K ♦" {
+	if c.String() != "K♦" {
 		t.Error("String conversion for king of diamonds was incorrect: ", c.String())
 	}
 
@@ -50,8 +50,6 @@ func TestDeck(t *testing.T) {
 	if len(d.cards) != len(d.deckIndex) {
 		t.Error("Card count does not match deck index")
 	}
-
-	fmt.Println(d.deckIndex)
 }
 
 func TestDeckShuffle(t *testing.T) {
@@ -108,7 +106,6 @@ func TestMultipleDeck(t *testing.T) {
 		t.Error("Card count does not match deck index")
 	}
 
-	fmt.Println(d.deckIndex)
 }
 
 func TestOmitRanks(t *testing.T) {
@@ -123,4 +120,12 @@ func TestOmitRanks(t *testing.T) {
 			}
 		}
 	}
+}
+
+func TestPrintDeck(t *testing.T) {
+
+	d := New(1, 2, []Rank{})
+
+	fmt.Println("Printing deck: ")
+	fmt.Println(d)
 }
