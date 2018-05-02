@@ -5,7 +5,8 @@ import (
 	"bytes"
 	"errors"
 	"fmt"
-	"math/rand"
+	mrand "math/rand"
+	"time"
 )
 
 // Rank is used to represent the rank of a card (e.g. King).
@@ -69,6 +70,7 @@ type Deck struct {
 	cards       []Card
 	cardOrder   []int // the value at each location indexes into cards
 	currentCard int   // the current card (indexes into cardOrder)
+	rng         *mrand.Rand
 }
 
 // New creates a new unshuffled deck comprised of nDecks of 52 cards and nJokers,
@@ -109,14 +111,18 @@ func New(nDecks int, nJokers int, omitRanks []Rank) Deck {
 		indices = append(indices, i)
 	}
 
-	deck := Deck{c, indices, 0}
+	// Add RNG
+	rsrc := mrand.NewSource(time.Now().UnixNano())
+	rng := mrand.New(rsrc)
+
+	deck := Deck{c, indices, 0, rng}
 
 	return deck
 }
 
 // Shuffle shuffles the cards randomly and resets the deck.
 func (d *Deck) Shuffle() {
-	i := rand.Perm(54)
+	i := d.rng.Perm(54)
 
 	d.cardOrder = i
 }
