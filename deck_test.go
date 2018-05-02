@@ -138,7 +138,7 @@ func TestDrawCard(t *testing.T) {
 	}
 
 	for i := 0; i < 10; i++ {
-		_, err := d.drawCard()
+		_, err := d.DrawCard()
 		if err != nil {
 			t.Error("Error while drawing card:", err)
 		}
@@ -155,13 +155,13 @@ func TestExhaustDeck(t *testing.T) {
 	deckLength := len(d.cards)
 
 	for i := 0; i < deckLength; i++ {
-		_, err := d.drawCard()
+		_, err := d.DrawCard()
 		if err != nil {
 			t.Error("Error while drawing card:", err)
 		}
 	}
 	// This draw should fail
-	_, err := d.drawCard()
+	_, err := d.DrawCard()
 	if err == nil {
 		t.Error("Deck should have been exhausted but was not.")
 	}

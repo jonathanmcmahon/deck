@@ -138,7 +138,7 @@ func (d Deck) String() string {
 	return fmt.Sprintf(buffer.String())
 }
 
-func (d *Deck) drawCard() (Card, error) {
+func (d *Deck) DrawCard() (Card, error) {
 	var card Card
 	currIndex := d.currentCard
 
