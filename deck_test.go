@@ -47,7 +47,7 @@ func TestDeck(t *testing.T) {
 		t.Error("Deck is not 54 cards; it is ", len(d.cards))
 	}
 
-	if len(d.cards) != len(d.deckIndex) {
+	if len(d.cards) != len(d.cardOrder) {
 		t.Error("Card count does not match deck index")
 	}
 }
@@ -56,9 +56,9 @@ func TestDeckShuffle(t *testing.T) {
 	d := New(1, 2, []Rank{})
 
 	// Shuffle cards
-	pre := d.deckIndex
+	pre := d.cardOrder
 	d.Shuffle()
-	post := d.deckIndex
+	post := d.cardOrder
 
 	// Look for difference in card ordering post-shuffle
 	diff := false
@@ -102,7 +102,7 @@ func TestMultipleDeck(t *testing.T) {
 		t.Error("Deck is not", nCards, "cards; it is ", len(d.cards))
 	}
 
-	if len(d.cards) != len(d.deckIndex) {
+	if len(d.cards) != len(d.cardOrder) {
 		t.Error("Card count does not match deck index")
 	}
 
@@ -128,4 +128,41 @@ func TestPrintDeck(t *testing.T) {
 
 	fmt.Println("Printing deck: ")
 	fmt.Println(d)
+}
+
+func TestDrawCard(t *testing.T) {
+	d := New(1, 2, []Rank{})
+
+	if d.currentCard != 0 {
+		t.Error("Starting card is not top card:", d.currentCard)
+	}
+
+	for i := 0; i < 10; i++ {
+		_, err := d.drawCard()
+		if err != nil {
+			t.Error("Error while drawing card:", err)
+		}
+	}
+
+	if d.currentCard != 10 {
+		t.Error("Current card index is incorrect; should be 10 but it is", d.currentCard)
+	}
+}
+
+func TestExhaustDeck(t *testing.T) {
+
+	d := New(1, 2, []Rank{})
+	deckLength := len(d.cards)
+
+	for i := 0; i < deckLength; i++ {
+		_, err := d.drawCard()
+		if err != nil {
+			t.Error("Error while drawing card:", err)
+		}
+	}
+	// This draw should fail
+	_, err := d.drawCard()
+	if err == nil {
+		t.Error("Deck should have been exhausted but was not.")
+	}
 }

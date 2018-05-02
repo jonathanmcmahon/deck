@@ -3,6 +3,7 @@ package deck
 
 import (
 	"bytes"
+	"errors"
 	"fmt"
 	"math/rand"
 )
@@ -65,8 +66,9 @@ func (c Card) String() string {
 
 // A Deck is a deck of playing cards.
 type Deck struct {
-	cards     []Card
-	deckIndex []int // the order of the cards in the deck
+	cards       []Card
+	cardOrder   []int // the value at each location indexes into cards
+	currentCard int   // the current card (indexes into cardOrder)
 }
 
 // New creates a new unshuffled deck comprised of nDecks of 52 cards and nJokers,
@@ -107,25 +109,38 @@ func New(nDecks int, nJokers int, omitRanks []Rank) Deck {
 		indices = append(indices, i)
 	}
 
-	deck := Deck{c, indices}
+	deck := Deck{c, indices, 0}
 
 	return deck
 }
 
-// Shuffle shuffles the cards randomly.
+// Shuffle shuffles the cards randomly and resets the deck.
 func (d *Deck) Shuffle() {
 	i := rand.Perm(54)
 
-	d.deckIndex = i
+	d.cardOrder = i
 }
 
 func (d Deck) String() string {
 	var buffer bytes.Buffer
 
-	for _, c := range d.deckIndex {
+	for _, c := range d.cardOrder {
 		buffer.WriteString(d.cards[c].String())
 		buffer.WriteString(" ")
 	}
 
 	return fmt.Sprintf(buffer.String())
+}
+
+func (d *Deck) drawCard() (Card, error) {
+	var card Card
+	currIndex := d.currentCard
+
+	if currIndex < len(d.cards) {
+		d.currentCard++
+		card = d.cards[currIndex]
+		return card, nil
+	} else {
+		return card, errors.New("Deck is exhausted")
+	}
 }
