@@ -1,2 +1,2 @@
-# gocards
-A deck of cards
+# deck
+A golang library of playing cards 
