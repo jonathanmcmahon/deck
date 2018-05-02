@@ -137,13 +137,16 @@ func TestDrawCard(t *testing.T) {
 		t.Error("Starting card is not top card:", d.currentCard)
 	}
 
+	d.Shuffle()
+
 	for i := 0; i < 10; i++ {
-		_, err := d.DrawCard()
+		c, err := d.DrawCard()
 		if err != nil {
 			t.Error("Error while drawing card:", err)
+		} else {
+			fmt.Println("Card drawn:", c)
 		}
 	}
-
 	if d.currentCard != 10 {
 		t.Error("Current card index is incorrect; should be 10 but it is", d.currentCard)
 	}

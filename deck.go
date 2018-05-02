@@ -144,7 +144,7 @@ func (d *Deck) DrawCard() (Card, error) {
 
 	if currIndex < len(d.cards) {
 		d.currentCard++
-		card = d.cards[currIndex]
+		card = d.cards[d.cardOrder[currIndex]]
 		return card, nil
 	} else {
 		return card, errors.New("Deck is exhausted")
