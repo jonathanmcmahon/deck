@@ -122,7 +122,7 @@ func New(nDecks int, nJokers int, omitRanks []Rank) Deck {
 
 // Shuffle shuffles the cards randomly and resets the deck.
 func (d *Deck) Shuffle() {
-	i := d.rng.Perm(54)
+	i := d.rng.Perm(len(d.cards))
 
 	d.cardOrder = i
 }
@@ -149,4 +149,19 @@ func (d *Deck) DrawCard() (Card, error) {
 	} else {
 		return card, errors.New("Deck is exhausted")
 	}
+}
+
+func compare(a, b Deck) bool {
+	if len(a.cardOrder) != len(b.cardOrder) {
+		return false
+	}
+	for i := 0; i < len(a.cardOrder); i++ {
+		if a.cardOrder[i] != b.cardOrder[i] {
+			return false
+		}
+	}
+	if a.currentCard != b.currentCard {
+		return false
+	}
+	return true
 }
